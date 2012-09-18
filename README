@@ -1,0 +1,89 @@
+#
+# SPHPORTAL
+# ---------
+# Nesse arquivo apresentaremos os passos para instalação do war no jboss 7.
+# Apresentamos exemplos em cima do banco de dados postgresql, utilizado no desenvolvimento.
+#
+# OS PASSOS DEVEM SER ADAPTADOS PARA INSTALAÇÃO DO ORACLE!!!!
+# 
+
+Schema do banco
+---------------
+No diretório resources/sphportal-schema.sql temos o schema para gerar o banco para postgresql.
+Esse arquivo deve ser utilizado como referência para criação do banco oracle.
+As diferenças com relação ao schema inicialmente definido são:
+  - CENTRO_DE_CUSTO: Inserir campo DS_CCUSTO
+  - CLIENTE: removida referência a tabela CEP. Criado campo COD_CEP
+  - CLIENTE: criado campo DS_BAIRRO.
+  - CLIENTE: removido DS_CIDADE. Criado referência ID_CIDADE.
+  - CLIENTE_CONTATO_FONE: removido. Veja tabela telefone.
+  - PESSOA: criado campo CD_TP_PESSOA como discriminator.
+  - CONTATO: impementada hierarquia com PESSOA. ID_PESSOA passa a ser pk de CONTATO com CD_TP_PESSOA
+      em PESSOA assumindo valor 1.
+  - CONTATO: removido ID_DEPARTAMENTO e criado um campo DS_DEPARTAMENTO.
+  - CLIENTE_CONTATO: removida tabela. Passou a utilizar a hierarquia de pessoa.
+  - CONTRATO_SERVICO_SLA: criado DS_DESCRICAO
+  - SERVIDO: removido. Associacoes diretamente com CONTRATO_SERVICO_SLA.
+  - FERIADO: criar FL_NACIONAL.
+  - TELEFONE: nova tabela. Substitui CLIENTE_CONTATO_FONE.
+  - GRUPO_ACESSO: nova tabela
+  - PERMISSOES: nova tabela
+  - USUARIO: criar campos DS_NOME, DS_PASSWORD, FL_ADMIN.
+
+
+Instalação jboss as 7
+---------------------
+O sphportal está sendo validado na versão 7.1.1 (ultima) com JVM 1.6 do jboss application server.
+
+Configuração jboss
+------------------
+1) Instalar driver Oracle
+No jboss 7 os drivers são instalados dentro de JBOSS_HOME/modules.
+Os modulos são organizados em uma estrutura de diretório.
+Apresentaremos como exemplo a instalação do postgresql:
+  - Em JBOSS_HOME/modules criar a pasta org/postgresql/main.
+  - Criar um arquivo module.xml como o contido na pasta resources/exemplo/module.xml
+  - Copiar o arquivo jar REFERENCIADO NO MODULE.XML para a pasta main criada.
+
+2) Configurar datasource
+Os datasources são configurados no arquivo JBOSS_HOME/standalone/configuration/standalone.xml
+  - Deve ser configurado o datasource dentro da seção datasources do arquivo.
+  - Criar uma entrada para o driver e uma para o datasource.
+  - A aplicação utiliza o nome JNDI "java:/jdbc/sphportalDS" para acessar o datasource.
+  
+  --------------------------------------------------------------------------------------------------------------------
+  ...
+                  <datasource jndi-name="java:/jdbc/sphportalDS" pool-name="sphportalDS" enabled="true" use-java-context="true">
+                    <connection-url>jdbc:postgresql://localhost:5432/sphportal</connection-url>
+                    <driver>org.postgresql</driver>
+                    <pool>
+                        <min-pool-size>2</min-pool-size>
+                        <max-pool-size>10</max-pool-size>
+                        <prefill>true</prefill>
+                    </pool>
+                    <security>
+                        <user-name>postgres</user-name>
+                         <password>***</password>
+                    </security>
+                    <statement>
+                        <prepared-statement-cache-size>32</prepared-statement-cache-size>
+                        <share-prepared-statements>true</share-prepared-statements>
+                    </statement>
+                </datasource>
+  
+  ...
+  
+          <driver name="org.postgresql" module="org.postgresql">
+            <xa-datasource-class>org.postgresql.xa.PGXADataSource</xa-datasource-class>
+          </driver>  
+--------------------------------------------------------------------------------------------------------------------
+    
+  - Veja exemplo da configuração do datasource em resources/exemplo/standalone.xml
+  - Veja exemplo completo para mysql em https://community.jboss.org/wiki/DataSourceConfigurationInAS7
+  
+3) Deploy da aplicação: 
+  - Copiar o arquivo sphportal-0.1.war para JBOSS_HOME/standalone/deployment
+  
+4) Inicialização do jboss: JBOSS_HOME/bin/standalone.sh
+
+5) Acesso à aplicação: http://<HOST>:8080/sphportal-0.1/
