@@ -21,6 +21,7 @@ class CepController {
 
     def save() {
         def cepInstance = new Cep(params)
+        cepInstance.codigo = params.codigo.replaceAll('-','').toInteger()
         if (!cepInstance.save(flush: true)) {
             render(view: "create", model: [cepInstance: cepInstance])
             return
@@ -59,7 +60,7 @@ class CepController {
             redirect(action: "list")
             return
         }
-
+        
         if (params.version) {
             def version = params.version.toLong()
             if (cepInstance.version > version) {
@@ -72,7 +73,8 @@ class CepController {
         }
 
         cepInstance.properties = params
-
+        cepInstance.codigo = params.codigo.replaceAll('-','').toInteger()
+        
         if (!cepInstance.save(flush: true)) {
             render(view: "edit", model: [cepInstance: cepInstance])
             return

@@ -8,7 +8,7 @@
   </label>
   <!-- <datePicker name="data" precision="day"  value="${feriadoInstance?.data}"  /> -->
   <!--richui:dateChooser id="data" name="data" format="dd/MM/yyyy" /-->    
-  <g:textField name="data" value="${feriadoInstance?.data.format('dd/MM/yyyy')}" />
+  <g:textField name="data" value="${feriadoInstance?.data?.format('dd/MM/yyyy')}" />
 </div>
 <script language="javascript" >
 $().ready(function() {    

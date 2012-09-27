@@ -84,7 +84,7 @@ $().ready(function() {
                         <g:if test="${clienteInstance?.cep}">
                             <li class="fieldcontain"><span id="cep-label" class="property-label"><g:message
                                         code="cliente.cep.label" default="Cep" /></span> <span class="property-value" aria-labelledby="cep-label">
-                                    <g:fieldValue id="cep" bean="${clienteInstance}" field="cep" />
+                                    ${clienteInstance.cepstr()}
                             </span></li>
 
                         </g:if>

@@ -47,6 +47,13 @@ class Cliente {
     this.cep = new Integer(cepStr.replaceAll('-', ''))
   }
   
+  def cepstr() {
+    String str = cep.toString();
+    int delta = 8 - str.length();
+    for(int i=0; i<delta; i++) str = "0$str"
+    str.substring(0, 5) + "-" + str.substring(5, 8)
+  }
+  
   static hasMany = [contatos:Contato]
   
   // VIEW: Cliente - Validador de CPF/CNPJ

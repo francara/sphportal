@@ -27,7 +27,7 @@
 				<li class="fieldcontain">
 					<span id="codigo-label" class="property-label"><g:message code="cep.codigo.label" default="Codigo" /></span>
 					
-						<span class="property-value" aria-labelledby="codigo-label"><g:fieldValue bean="${cepInstance}" field="codigo"/></span>
+						<span class="property-value" aria-labelledby="codigo-label">${cepInstance.toString()}</span>
 					
 				</li>
 				</g:if>
@@ -36,7 +36,7 @@
 				<li class="fieldcontain">
 					<span id="cidade-label" class="property-label"><g:message code="cep.cidade.label" default="Cidade" /></span>
 					
-						<span class="property-value" aria-labelledby="cidade-label"><g:link controller="cidade" action="show" id="${cepInstance?.cidade?.id}">${cepInstance?.cidade?.encodeAsHTML()}</g:link></span>
+						<span class="property-value" aria-labelledby="cidade-label"><g:link controller="cidade" action="show" id="${cepInstance?.cidade?.id}">${cepInstance?.cidade?.descricao}</g:link></span>
 					
 				</li>
 				</g:if>
