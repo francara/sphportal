@@ -12,7 +12,8 @@ class Cidade {
   }
   
   static constraints = {
-    descricao blank:false, nullable:false, unique:true
+    codigo size: 0..20
+    descricao blank:false, nullable:false, unique:true, size: 0..20
   }
   
   static mapping = {

@@ -42,20 +42,14 @@
                                 aria-labelledby="diaUtil-label"><g:formatBoolean boolean="${gradeDiaInstance?.diaUtil}" /></span></li>
                         </g:if>
 
-                        <g:if test="${gradeDiaInstance?.intervalos}">
-                            <li class="fieldcontain"><span id="intervalos-label" class="property-label"><g:message
-                                        code="gradeDia.intervalos.label" default="Intervalos" /></span> <g:each
-                                    in="${gradeDiaInstance.intervalos}" var="i">
-                                    <span class="property-value" aria-labelledby="intervalos-label"><g:link
-                                            controller="diaSemanaIntervalo" action="show" id="${i.id}">
-                                            ${i?.encodeAsHTML()}
-                                        </g:link></span>
-                                </g:each></li>
-                        </g:if>
-
                     </ol>
                 </fieldset>
-
+                
+                <div class="box">
+                    <h2>Intervalo Dias</h2>
+                    <tmpl:intervalosHora intervaloHoraInstanceList="${intervaloInstanceList}" />
+                </div>
+                
                 <fieldset class="buttons">
                     <g:hiddenField name="id" value="${gradeDiaInstance?.id}" />
                     <g:if test="${conversation}">

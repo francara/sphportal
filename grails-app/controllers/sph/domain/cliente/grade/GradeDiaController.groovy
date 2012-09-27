@@ -15,15 +15,15 @@ class GradeDiaController {
     def gradeDiaInstance = GradeDia.get(params.id)
 
     gradeDiaInstance.addToIntervalos(new DiaSemanaIntervalo(intervaloInstance))
-        
+
     if (!gradeDiaInstance.save(flush: true)) {
       redirect(action: "edit", id: params.id)
       return
     }
-    
+
     redirect(action: "edit", id: params.id)
   }
-    
+
   def index() {
     redirect(action: "list", params: params)
   }
@@ -68,7 +68,12 @@ class GradeDiaController {
       return
     }
 
-    [gradeDiaInstance: gradeDiaInstance]
+    List<IntervaloHora> intervalos = new ArrayList()
+    gradeDiaInstance.intervalos.each{
+      intervalos.add(it.intervalo)
+    }
+
+    [gradeDiaInstance: gradeDiaInstance, intervaloInstanceList: intervalos]
   }
 
   def edit() {
@@ -87,9 +92,9 @@ class GradeDiaController {
     }
 
     /*
-    * Seleciona apenas as gradeDia que não estão associas a GradeHoras
-    */
-   def exclusiveIntervalosList =  IntervaloHora.findAll("        \
+     * Seleciona apenas as gradeDia que não estão associas a GradeHoras
+     */
+    def exclusiveIntervalosList =  IntervaloHora.findAll("        \
      from IntervaloHora as intervalo                        \
      where                                                  \
          not exists(                                        \
@@ -99,12 +104,12 @@ class GradeDiaController {
                grade = ?                                    \
                and grade_intervalo.intervalo = intervalo    \
      )", [gradeDiaInstance])
-    
-    [ gradeDiaInstance: gradeDiaInstance, intervaloInstanceList: intervalos, 
-      exclusiveIntervalosList: exclusiveIntervalosList,
-      conversation: params.conversation,
-      backcontroller: params.backcontroller, backaction: params.backaction, backid: params.backid
-    ]
+
+    [ gradeDiaInstance: gradeDiaInstance, intervaloInstanceList: intervalos,
+          exclusiveIntervalosList: exclusiveIntervalosList,
+          conversation: params.conversation,
+          backcontroller: params.backcontroller, backaction: params.backaction, backid: params.backid
+        ]
   }
 
   def update() {
@@ -179,6 +184,45 @@ class GradeDiaController {
         params.id
       ])
       redirect(action: "show", id: params.id)
+    }
+  }
+
+  def deleteIntervalo() {
+    def gradeDiaInstance = GradeDia.get(params.id)
+    def intervaloHoraInstance = IntervaloHora.get(params.intervalo)
+    if (!intervaloHoraInstance) {
+      flash.message = message(code: 'default.not.found.message', args: [
+        message(code: 'intervaloHora.label', default: 'IntervaloHora'),
+        params.intervalo
+      ])
+      redirect(action: "list")
+      return
+    }
+
+    DiaSemanaIntervalo dia
+    gradeDiaInstance.intervalos.each {
+      DiaSemanaIntervalo diaSemanaIntervalo = it
+      if (diaSemanaIntervalo.intervalo == intervaloHoraInstance) {
+        dia = diaSemanaIntervalo
+      }
+    }
+    gradeDiaInstance.removeFromIntervalos(dia)
+    
+    try {
+      gradeDiaInstance.save(flush: true)
+      dia.delete(flush: true)
+      flash.message = message(code: 'default.deleted.message', args: [
+        message(code: 'diaSemanaIntervalo.label', default: 'Dia Semana Intevalo'),
+        params.id
+      ])
+      redirect(action: "edit", id: params.id)
+    }
+    catch (DataIntegrityViolationException e) {
+      flash.message = message(code: 'default.not.deleted.message', args: [
+        message(code: 'diaSemanaIntervalo.label', default: 'Dia Semana Intervalo'),
+        params.id
+      ])
+      redirect(action: "edit", id: params.id)
     }
   }
 }

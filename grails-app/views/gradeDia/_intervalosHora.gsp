@@ -36,7 +36,9 @@
                         <g:link action="edit" controller="intervaloHora" id="${intervaloHoraInstance.id}" 
                             class="ui-state-default ui-corner-all ui-icon ui-icon-pencil" style="float:left" title="Editar" />
                     </g:else> 
-                    <g:link action="delete" controller="diaSemanaIntervalo" id="${intervaloHoraInstance.id}" class="ui-state-default ui-corner-all ui-icon ui-icon-trash" title="Remover" onclick="return confirm('Tem certeza?');" /></td>
+                    <g:link action="deleteIntervalo" controller="gradeDia" id="${gradeDiaInstance.id}"
+                            params='[intervalo: "${intervaloHoraInstance.id}"]'  
+                            class="ui-state-default ui-corner-all ui-icon ui-icon-trash" title="Remover" onclick="return confirm('Tem certeza?');" /></td>
             </tr>
         </g:each>
     </tbody>

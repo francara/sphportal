@@ -10,7 +10,7 @@ class IntervaloHora {
   Double percentualExtra
   
   public String toString() {
-    horaInicio + " - " + horaFim
+    horaInicio.format("HH:mm") + " - " + horaFim.format("HH:mm")
   }
   
   static constraints = {

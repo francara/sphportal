@@ -32,7 +32,7 @@
                 <g:each in="${diaSemanaIntervaloInstanceList}" status="i" var="diaSemanaIntervaloInstance">
                     <tr class="${(i % 2) == 0 ? 'even' : 'odd'}">
                         
-						<td><g:link action="show" id="${diaSemanaIntervaloInstance.id}">${fieldValue(bean: diaSemanaIntervaloInstance, field: "dia")}</g:link></td>
+						<td><g:link action="show" id="${diaSemanaIntervaloInstance.id}">${diaSemanaIntervaloInstance.dia?.descricao}</g:link></td>
 					
 						<td>${fieldValue(bean: diaSemanaIntervaloInstance, field: "intervalo")}</td>
 					

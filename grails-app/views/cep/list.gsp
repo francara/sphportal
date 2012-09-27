@@ -34,9 +34,9 @@
                 <g:each in="${cepInstanceList}" status="i" var="cepInstance">
                     <tr class="${(i % 2) == 0 ? 'even' : 'odd'}">
                         
-						<td><g:link action="show" id="${cepInstance.id}">${fieldValue(bean: cepInstance, field: "codigo")}</g:link></td>
+						<td><g:link action="show" id="${cepInstance.id}">${cepInstance?.toString()}</g:link></td>
 					
-						<td>${fieldValue(bean: cepInstance, field: "cidade")}</td>
+						<td>${cepInstance?.cidade?.descricao}</td>
 					
 						<td>${fieldValue(bean: cepInstance, field: "logradouro")}</td>
 					

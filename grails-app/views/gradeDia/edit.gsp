@@ -50,7 +50,7 @@
                     
                     <ul style=" list-style:none;">
                         <li style="float:left; position:relative; right: -50px"> 
-                            <g:select name="intervaloHora" optionKey="id" optionValue="horaInicio" style="width:200px"
+                            <g:select name="intervaloHora" optionKey="id"  style="width:200px"
                                 from="${exclusiveIntervalosList}"                           />
                         </li>
                         <li style="display:inline; position:relative; right:  -60px">
@@ -77,7 +77,7 @@
 
                 <div class="box">
                     <h2>Intervalo Dias</h2>
-                    <tmpl:intervalosHora intervaloHoraInstanceList="${intervaloInstanceList}" />
+                    <tmpl:intervalosHora intervaloHoraInstanceList="${intervaloInstanceList}" gradeDiaInstance="${gradeDiaInstance}" />
                 </div>
 
                 <fieldset class="buttons">
