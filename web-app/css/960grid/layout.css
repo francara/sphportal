@@ -86,7 +86,7 @@ h2#page-heading {
 .box h2 a,
 .box h2 a.visible {
 	color:#fff;
-	background:#102237 url("../img/switch_minus.gif") 97% 50% no-repeat;
+	background:#102237 url("../../images/960grid/switch_minus.gif") 97% 50% no-repeat;
 	display:block;
 	padding:6px 12px;
 	margin:-6px -12px;
@@ -105,7 +105,7 @@ h2#page-heading {
 
 .box h2 a.hidden,
 .box h2 a.hidden:hover {
-	background-image: url("../img/switch_plus.gif");
+	background-image: url("../../images/960grid/switch_plus.gif");
 }
 .box h2 a:hover {
 	background-color:#111;
